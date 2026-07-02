@@ -67,7 +67,6 @@ export default function ImpactStats() {
           </p>
         </motion.div>
 
-        {/* Stats Grid */}
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
           {impactData.map((stat, index) => (
             <motion.div
@@ -94,9 +93,7 @@ export default function ImpactStats() {
           ))}
         </div>
 
-        {/* Recent Donations & Transparency */}
         <div className="grid lg:grid-cols-2 gap-8">
-          {/* Recent Donations */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -149,7 +146,6 @@ export default function ImpactStats() {
             </div>
           </motion.div>
 
-          {/* Transparency Card */}
           <motion.div
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -166,7 +162,7 @@ export default function ImpactStats() {
               exactly how your donation is used. We publish monthly reports 
               showing fund allocation and impact metrics.
             </p>
-
+            
             <div className="space-y-4 mb-8">
               {[
                 { label: 'Education', value: 45 },
