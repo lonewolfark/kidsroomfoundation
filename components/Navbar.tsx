@@ -2,8 +2,9 @@
 
 import { useState, useEffect } from 'react'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
-import { Heart, Menu, X } from 'lucide-react'
+import { Menu, X } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
+import Image from 'next/image'
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false)
@@ -31,19 +32,30 @@ export default function Navbar() {
       transition={{ duration: 0.6, ease: 'easeOut' }}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled
-          ? 'bg-white/80 backdrop-blur-lg shadow-lg'
+          ? 'bg-white/90 backdrop-blur-lg shadow-lg shadow-coral-100/50'
           : 'bg-transparent'
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
-          <a href="#home" className="flex items-center gap-2 group">
-            <div className="w-10 h-10 bg-gradient-primary rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
-              <Heart className="w-5 h-5 text-white" fill="white" />
+          <a href="#home" className="flex items-center gap-3 group">
+            <div className="relative w-12 h-12 group-hover:scale-110 transition-transform">
+              <Image
+                src="/images/logo.png"
+                alt="Kids Room Foundation"
+                fill
+                className="object-contain"
+                priority
+              />
             </div>
-            <span className="text-xl font-bold text-gradient">
-              Kids Room
-            </span>
+            <div className="hidden sm:block">
+              <span className="text-lg font-bold text-earth-800 leading-tight">
+                Kids Room
+              </span>
+              <span className="block text-xs text-coral-500 font-semibold tracking-wider uppercase">
+                Foundation
+              </span>
+            </div>
           </a>
 
           <div className="hidden md:flex items-center gap-8">
@@ -51,7 +63,7 @@ export default function Navbar() {
               <a
                 key={link.name}
                 href={link.href}
-                className="text-slate-600 hover:text-primary-600 font-medium transition-colors relative group"
+                className="text-earth-600 hover:text-coral-600 font-medium transition-colors relative group"
               >
                 {link.name}
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-primary group-hover:w-full transition-all duration-300" />
@@ -72,9 +84,9 @@ export default function Navbar() {
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
             {isMobileMenuOpen ? (
-              <X className="w-6 h-6 text-slate-700" />
+              <X className="w-6 h-6 text-earth-700" />
             ) : (
-              <Menu className="w-6 h-6 text-slate-700" />
+              <Menu className="w-6 h-6 text-earth-700" />
             )}
           </button>
         </div>
@@ -86,20 +98,20 @@ export default function Navbar() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-white/95 backdrop-blur-lg border-t"
+            className="md:hidden bg-white/95 backdrop-blur-lg border-t border-coral-100"
           >
             <div className="px-4 py-6 space-y-4">
               {navLinks.map((link) => (
                 <a
                   key={link.name}
                   href={link.href}
-                  className="block text-slate-600 hover:text-primary-600 font-medium py-2"
+                  className="block text-earth-600 hover:text-coral-600 font-medium py-2"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   {link.name}
                 </a>
               ))}
-              <div className="pt-4 border-t">
+              <div className="pt-4 border-t border-coral-100">
                 <ConnectButton 
                   showBalance={false}
                   accountStatus="address"
