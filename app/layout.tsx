@@ -8,7 +8,7 @@ const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: 'Kids Room Foundation - Crypto Donations for Children',
-  description: 'Support children in need through transparent blockchain donations. Every contribution makes a difference in a child's life.',
+  description: 'Support children in need through transparent blockchain donations. Every contribution makes a difference in a child\'s life.',
   keywords: ['crypto donation', 'children charity', 'blockchain', 'Ethereum', 'Bitcoin', 'donation'],
   openGraph: {
     title: 'Kids Room Foundation',
