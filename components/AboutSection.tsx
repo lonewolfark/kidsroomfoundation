@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion'
 import { Target, Heart, Globe, Lock, Users, Award } from 'lucide-react'
+import Image from 'next/image'
 
 const values = [
   {
@@ -47,16 +48,16 @@ export default function AboutSection() {
           transition={{ duration: 0.8 }}
           className="text-center mb-16"
         >
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary-50 border border-primary-200 mb-6">
-            <Users className="w-4 h-4 text-primary-500" />
-            <span className="text-sm font-medium text-primary-700">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-coral-50 border border-coral-200 mb-6">
+            <Users className="w-4 h-4 text-coral-500" />
+            <span className="text-sm font-medium text-coral-700">
               About Us
             </span>
           </div>
-          <h2 className="text-4xl sm:text-5xl font-bold text-slate-800 mb-4">
+          <h2 className="text-4xl sm:text-5xl font-bold text-earth-800 mb-4">
             Why <span className="text-gradient">Crypto</span> for Good?
           </h2>
-          <p className="text-lg text-slate-600 max-w-3xl mx-auto">
+          <p className="text-lg text-earth-600 max-w-3xl mx-auto">
             Traditional charity donations often lose 10-20% to banking fees and intermediaries. 
             Blockchain technology allows us to put 98% of every donation directly into the hands 
             of children who need it most.
@@ -71,15 +72,15 @@ export default function AboutSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: index * 0.1 }}
-              className="group bg-white rounded-3xl p-8 shadow-lg shadow-slate-200/50 border border-slate-100 hover:shadow-xl transition-all hover:-translate-y-1"
+              className="group bg-white rounded-3xl p-8 shadow-lg shadow-earth-100/50 border border-coral-100/50 hover:shadow-xl transition-all hover:-translate-y-1"
             >
-              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary-100 to-accent-100 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                <value.icon className="w-7 h-7 text-primary-600" />
+              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-coral-100 to-earth-100 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                <value.icon className="w-7 h-7 text-coral-600" />
               </div>
-              <h3 className="text-xl font-bold text-slate-800 mb-3">
+              <h3 className="text-xl font-bold text-earth-800 mb-3">
                 {value.title}
               </h3>
-              <p className="text-slate-600 leading-relaxed">
+              <p className="text-earth-600 leading-relaxed">
                 {value.description}
               </p>
             </motion.div>
@@ -91,8 +92,16 @@ export default function AboutSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className="mt-16 bg-gradient-to-r from-primary-600 to-accent-600 rounded-3xl p-12 text-center text-white"
+          className="mt-16 bg-gradient-to-r from-coral-500 to-earth-500 rounded-3xl p-12 text-center text-white"
         >
+          <div className="relative w-24 h-24 mx-auto mb-6">
+            <Image
+              src="/images/logo.png"
+              alt="Kids Room Foundation"
+              fill
+              className="object-contain brightness-0 invert opacity-90"
+            />
+          </div>
           <h3 className="text-3xl sm:text-4xl font-bold mb-6">
             Our Mission
           </h3>
