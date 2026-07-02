@@ -16,9 +16,6 @@ import {
 } from 'lucide-react'
 import { formatAddress } from '@/lib/utils'
 
-// ============================================
-// EMBEDDED WALLET ADDRESSES — DO NOT MODIFY
-// ============================================
 const WALLET_ADDRESSES = {
   btc: 'bc1qfwvcxf4lxu7pm7zjz4765a0ex3sw6sqv3h2ace',
   eth: '0x814124d2b00f1654ec0954dfb8f5ed8d06488e7b',
@@ -27,8 +24,6 @@ const WALLET_ADDRESSES = {
   usdt_erc20: '0x814124D2b00f1654Ec0954dfb8F5ED8D06488E7b',
   usdc_erc20: '0x814124D2b00f1654Ec0954dfb8F5ED8D06488E7b',
 } as const
-
-// ============================================
 
 const CRYPTO_OPTIONS = [
   {
@@ -152,16 +147,16 @@ export default function DonationSection() {
           transition={{ duration: 0.8 }}
           className="text-center mb-16"
         >
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent-50 border border-accent-200 mb-6">
-            <Heart className="w-4 h-4 text-accent-500" fill="currentColor" />
-            <span className="text-sm font-medium text-accent-700">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-coral-50 border border-coral-200 mb-6">
+            <Heart className="w-4 h-4 text-coral-500" fill="currentColor" />
+            <span className="text-sm font-medium text-coral-700">
               Make a Difference
             </span>
           </div>
-          <h2 className="text-4xl sm:text-5xl font-bold text-slate-800 mb-4">
+          <h2 className="text-4xl sm:text-5xl font-bold text-earth-800 mb-4">
             Choose Your <span className="text-gradient">Donation</span>
           </h2>
-          <p className="text-lg text-slate-600 max-w-2xl mx-auto">
+          <p className="text-lg text-earth-600 max-w-2xl mx-auto">
             Select your preferred cryptocurrency and amount. Every donation is 
             recorded on the blockchain for complete transparency.
           </p>
@@ -174,9 +169,9 @@ export default function DonationSection() {
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
           >
-            <div className="bg-white rounded-3xl shadow-xl shadow-slate-200/50 border border-slate-100 p-8">
+            <div className="bg-white rounded-3xl shadow-xl shadow-earth-100/50 border border-coral-100/50 p-8">
               <div className="mb-8">
-                <label className="block text-sm font-semibold text-slate-700 mb-4">
+                <label className="block text-sm font-semibold text-earth-700 mb-4">
                   Select Cryptocurrency
                 </label>
                 <div className="grid grid-cols-2 gap-3">
@@ -190,8 +185,8 @@ export default function DonationSection() {
                       }}
                       className={`flex items-center gap-3 p-4 rounded-2xl border-2 transition-all ${
                         selectedCrypto.id === crypto.id
-                          ? 'border-primary-500 bg-primary-50'
-                          : 'border-slate-100 hover:border-slate-200'
+                          ? 'border-coral-400 bg-coral-50'
+                          : 'border-earth-100 hover:border-coral-200'
                       }`}
                     >
                       <div
@@ -201,10 +196,10 @@ export default function DonationSection() {
                         {crypto.icon}
                       </div>
                       <div className="text-left min-w-0">
-                        <div className="font-semibold text-slate-800 text-sm">
+                        <div className="font-semibold text-earth-800 text-sm">
                           {crypto.name}
                         </div>
-                        <div className="text-xs text-slate-500">
+                        <div className="text-xs text-earth-500">
                           {crypto.chain}
                         </div>
                       </div>
@@ -214,7 +209,7 @@ export default function DonationSection() {
               </div>
 
               <div className="mb-8">
-                <label className="block text-sm font-semibold text-slate-700 mb-4">
+                <label className="block text-sm font-semibold text-earth-700 mb-4">
                   Select Amount ({selectedCrypto.symbol})
                 </label>
                 <div className="grid grid-cols-3 gap-3 mb-4">
@@ -224,8 +219,8 @@ export default function DonationSection() {
                       onClick={() => handlePresetAmount(preset)}
                       className={`py-3 rounded-xl font-semibold transition-all text-sm ${
                         amount === preset
-                          ? 'bg-gradient-primary text-white shadow-lg shadow-primary-500/30'
-                          : 'bg-slate-50 text-slate-700 hover:bg-slate-100'
+                          ? 'bg-gradient-primary text-white shadow-lg shadow-coral-500/30'
+                          : 'bg-earth-50 text-earth-700 hover:bg-coral-50'
                       }`}
                     >
                       {preset} {selectedCrypto.symbol}
@@ -239,9 +234,9 @@ export default function DonationSection() {
                     placeholder={`Custom amount in ${selectedCrypto.symbol}`}
                     value={customAmount}
                     onChange={(e) => handleCustomAmount(e.target.value)}
-                    className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 outline-none transition-all"
+                    className="w-full px-4 py-3 rounded-xl border border-earth-200 focus:border-coral-400 focus:ring-2 focus:ring-coral-200 outline-none transition-all"
                   />
-                  <span className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 font-medium text-sm">
+                  <span className="absolute right-4 top-1/2 -translate-y-1/2 text-earth-400 font-medium text-sm">
                     {selectedCrypto.symbol}
                   </span>
                 </div>
@@ -261,7 +256,7 @@ export default function DonationSection() {
                         <button
                           onClick={handleDonate}
                           disabled={isPending || !amount}
-                          className="w-full py-4 bg-gradient-primary text-white font-bold rounded-2xl hover:shadow-lg hover:shadow-primary-500/30 transition-all hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+                          className="w-full py-4 bg-gradient-primary text-white font-bold rounded-2xl hover:shadow-lg hover:shadow-coral-500/30 transition-all hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
                         >
                           {isPending ? (
                             <span className="flex items-center justify-center gap-2">
@@ -274,12 +269,12 @@ export default function DonationSection() {
                         </button>
                       </>
                     ) : (
-                      <div className="text-center p-6 bg-slate-50 rounded-2xl border border-slate-200">
-                        <Wallet className="w-12 h-12 text-slate-400 mx-auto mb-3" />
-                        <p className="text-slate-600 mb-4">
+                      <div className="text-center p-6 bg-earth-50 rounded-2xl border border-earth-200">
+                        <Wallet className="w-12 h-12 text-earth-400 mx-auto mb-3" />
+                        <p className="text-earth-600 mb-4">
                           Connect your wallet to donate {selectedCrypto.symbol}
                         </p>
-                        <p className="text-sm text-slate-400">
+                        <p className="text-sm text-earth-400">
                           Use the connect button in the navigation bar
                         </p>
                       </div>
@@ -331,11 +326,11 @@ export default function DonationSection() {
             transition={{ duration: 0.8 }}
             className="space-y-6"
           >
-            <div className="bg-white rounded-3xl shadow-xl shadow-slate-200/50 border border-slate-100 p-8 text-center">
-              <h3 className="text-xl font-bold text-slate-800 mb-2">
+            <div className="bg-white rounded-3xl shadow-xl shadow-earth-100/50 border border-coral-100/50 p-8 text-center">
+              <h3 className="text-xl font-bold text-earth-800 mb-2">
                 Direct Transfer
               </h3>
-              <p className="text-sm text-slate-500 mb-6">
+              <p className="text-sm text-earth-500 mb-6">
                 Send {selectedCrypto.symbol} on {selectedCrypto.chain} to this address
               </p>
               
@@ -348,18 +343,18 @@ export default function DonationSection() {
                 {selectedCrypto.icon}
               </div>
 
-              <div className="bg-slate-50 rounded-xl p-4 mb-4">
-                <div className="text-xs text-slate-400 uppercase tracking-wider mb-2 font-semibold">
+              <div className="bg-earth-50 rounded-xl p-4 mb-4">
+                <div className="text-xs text-earth-400 uppercase tracking-wider mb-2 font-semibold">
                   {selectedCrypto.name} Address ({selectedCrypto.chain})
                 </div>
-                <code className="block text-sm text-slate-700 break-all font-mono leading-relaxed">
+                <code className="block text-sm text-earth-700 break-all font-mono leading-relaxed">
                   {selectedCrypto.address}
                 </code>
               </div>
               
               <button
                 onClick={handleCopyAddress}
-                className="w-full py-3 px-4 bg-slate-800 text-white font-semibold rounded-xl hover:bg-slate-700 transition-colors flex items-center justify-center gap-2"
+                className="w-full py-3 px-4 bg-earth-800 text-white font-semibold rounded-xl hover:bg-earth-700 transition-colors flex items-center justify-center gap-2"
               >
                 {copied ? (
                   <>
@@ -375,8 +370,8 @@ export default function DonationSection() {
               </button>
             </div>
 
-            <div className="bg-white rounded-3xl shadow-xl shadow-slate-200/50 border border-slate-100 p-6">
-              <h3 className="text-lg font-bold text-slate-800 mb-4">
+            <div className="bg-white rounded-3xl shadow-xl shadow-earth-100/50 border border-coral-100/50 p-6">
+              <h3 className="text-lg font-bold text-earth-800 mb-4">
                 All Donation Addresses
               </h3>
               <div className="space-y-3">
@@ -385,8 +380,8 @@ export default function DonationSection() {
                     key={crypto.id}
                     className={`flex items-center gap-3 p-3 rounded-xl transition-all cursor-pointer ${
                       selectedCrypto.id === crypto.id 
-                        ? 'bg-primary-50 border border-primary-200' 
-                        : 'bg-slate-50 hover:bg-slate-100'
+                        ? 'bg-coral-50 border border-coral-200' 
+                        : 'bg-earth-50 hover:bg-earth-100'
                     }`}
                     onClick={() => {
                       setSelectedCrypto(crypto)
@@ -401,10 +396,10 @@ export default function DonationSection() {
                       {crypto.icon}
                     </div>
                     <div className="min-w-0 flex-1">
-                      <div className="text-sm font-semibold text-slate-700">
-                        {crypto.name} <span className="text-slate-400">({crypto.chain})</span>
+                      <div className="text-sm font-semibold text-earth-700">
+                        {crypto.name} <span className="text-earth-400">({crypto.chain})</span>
                       </div>
-                      <div className="text-xs text-slate-500 truncate font-mono">
+                      <div className="text-xs text-earth-500 truncate font-mono">
                         {crypto.address}
                       </div>
                     </div>
@@ -421,13 +416,13 @@ export default function DonationSection() {
               ].map((item) => (
                 <div
                   key={item.label}
-                  className="bg-white rounded-2xl p-4 text-center border border-slate-100"
+                  className="bg-white rounded-2xl p-4 text-center border border-coral-100/50"
                 >
-                  <item.icon className="w-6 h-6 text-primary-500 mx-auto mb-2" />
-                  <div className="font-semibold text-slate-800 text-sm">
+                  <item.icon className="w-6 h-6 text-coral-500 mx-auto mb-2" />
+                  <div className="font-semibold text-earth-800 text-sm">
                     {item.label}
                   </div>
-                  <div className="text-xs text-slate-500 mt-1">
+                  <div className="text-xs text-earth-500 mt-1">
                     {item.desc}
                   </div>
                 </div>
