@@ -1,21 +1,34 @@
 'use client'
 
 import { useState } from 'react'
-import { useAccount, useSendTransaction, useBalance } from 'wagmi'
+import { useAccount, useSendTransaction } from 'wagmi'
 import { parseEther } from 'viem'
 import { motion } from 'framer-motion'
 import { 
   Wallet, 
   Copy, 
   Check, 
-  Bitcoin, 
-  Coins, 
   Heart,
   Shield,
   Zap,
-  Globe
+  Globe,
+  ExternalLink
 } from 'lucide-react'
 import { formatAddress } from '@/lib/utils'
+
+// ============================================
+// EMBEDDED WALLET ADDRESSES — DO NOT MODIFY
+// ============================================
+const WALLET_ADDRESSES = {
+  btc: 'bc1qfwvcxf4lxu7pm7zjz4765a0ex3sw6sqv3h2ace',
+  eth: '0x814124d2b00f1654ec0954dfb8f5ed8d06488e7b',
+  sol: 'XxDMtxTBC8mLepvXeacBAKhtez5iJuAFKgfmSt18YNy',
+  usdt_trc20: 'TVa2djKcc2dTZo6PrKYRhYHTkTV6w69zf6',
+  usdt_erc20: '0x814124D2b00f1654Ec0954dfb8F5ED8D06488E7b',
+  usdc_erc20: '0x814124D2b00f1654Ec0954dfb8F5ED8D06488E7b',
+} as const
+
+// ============================================
 
 const CRYPTO_OPTIONS = [
   {
@@ -24,7 +37,10 @@ const CRYPTO_OPTIONS = [
     symbol: 'ETH',
     icon: '◈',
     color: '#627EEA',
-    address: '0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb', // Replace with your ETH address
+    address: WALLET_ADDRESSES.eth,
+    chain: 'ERC20',
+    evm: true,
+    presets: ['0.01', '0.05', '0.1', '0.5', '1', '5'],
   },
   {
     id: 'btc',
@@ -32,27 +48,56 @@ const CRYPTO_OPTIONS = [
     symbol: 'BTC',
     icon: '₿',
     color: '#F7931A',
-    address: 'bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh', // Replace with your BTC address
+    address: WALLET_ADDRESSES.btc,
+    chain: 'Bitcoin',
+    evm: false,
+    presets: ['0.001', '0.005', '0.01', '0.05', '0.1', '0.5'],
   },
   {
-    id: 'usdc',
-    name: 'USDC',
-    symbol: 'USDC',
-    icon: '◈',
-    color: '#2775CA',
-    address: '0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb', // Replace with your USDC address
+    id: 'sol',
+    name: 'Solana',
+    symbol: 'SOL',
+    icon: '◎',
+    color: '#14F195',
+    address: WALLET_ADDRESSES.sol,
+    chain: 'Solana',
+    evm: false,
+    presets: ['0.1', '0.5', '1', '5', '10', '50'],
   },
   {
-    id: 'usdt',
+    id: 'usdt_erc20',
     name: 'USDT',
     symbol: 'USDT',
     icon: '◈',
     color: '#26A17B',
-    address: '0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb', // Replace with your USDT address
+    address: WALLET_ADDRESSES.usdt_erc20,
+    chain: 'ERC20',
+    evm: true,
+    presets: ['10', '25', '50', '100', '500', '1000'],
+  },
+  {
+    id: 'usdt_trc20',
+    name: 'USDT (TRC20)',
+    symbol: 'USDT',
+    icon: '◈',
+    color: '#FF060A',
+    address: WALLET_ADDRESSES.usdt_trc20,
+    chain: 'TRC20',
+    evm: false,
+    presets: ['10', '25', '50', '100', '500', '1000'],
+  },
+  {
+    id: 'usdc_erc20',
+    name: 'USDC',
+    symbol: 'USDC',
+    icon: '◈',
+    color: '#2775CA',
+    address: WALLET_ADDRESSES.usdc_erc20,
+    chain: 'ERC20',
+    evm: true,
+    presets: ['10', '25', '50', '100', '500', '1000'],
   },
 ]
-
-const PRESET_AMOUNTS = [0.01, 0.05, 0.1, 0.5, 1, 5]
 
 export default function DonationSection() {
   const { address, isConnected } = useAccount()
@@ -70,8 +115,8 @@ export default function DonationSection() {
   }
 
   const handleDonate = async () => {
-    if (!isConnected || !amount) return
-
+    if (!isConnected || !amount || !selectedCrypto.evm) return
+    
     try {
       const value = parseEther(amount)
       await sendTransaction({
@@ -85,8 +130,8 @@ export default function DonationSection() {
     }
   }
 
-  const handlePresetAmount = (preset: number) => {
-    setAmount(preset.toString())
+  const handlePresetAmount = (preset: string) => {
+    setAmount(preset)
     setCustomAmount('')
   }
 
@@ -94,6 +139,8 @@ export default function DonationSection() {
     setCustomAmount(value)
     setAmount(value)
   }
+
+  const canConnectWallet = selectedCrypto.evm
 
   return (
     <section id="donate" className="py-24 relative">
@@ -121,7 +168,6 @@ export default function DonationSection() {
         </motion.div>
 
         <div className="grid lg:grid-cols-2 gap-12 items-start">
-          {/* Donation Form */}
           <motion.div
             initial={{ opacity: 0, x: -40 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -129,7 +175,6 @@ export default function DonationSection() {
             transition={{ duration: 0.8 }}
           >
             <div className="bg-white rounded-3xl shadow-xl shadow-slate-200/50 border border-slate-100 p-8">
-              {/* Crypto Selection */}
               <div className="mb-8">
                 <label className="block text-sm font-semibold text-slate-700 mb-4">
                   Select Cryptocurrency
@@ -138,7 +183,11 @@ export default function DonationSection() {
                   {CRYPTO_OPTIONS.map((crypto) => (
                     <button
                       key={crypto.id}
-                      onClick={() => setSelectedCrypto(crypto)}
+                      onClick={() => {
+                        setSelectedCrypto(crypto)
+                        setAmount('')
+                        setCustomAmount('')
+                      }}
                       className={`flex items-center gap-3 p-4 rounded-2xl border-2 transition-all ${
                         selectedCrypto.id === crypto.id
                           ? 'border-primary-500 bg-primary-50'
@@ -146,17 +195,17 @@ export default function DonationSection() {
                       }`}
                     >
                       <div
-                        className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold"
+                        className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-sm flex-shrink-0"
                         style={{ backgroundColor: crypto.color }}
                       >
                         {crypto.icon}
                       </div>
-                      <div className="text-left">
-                        <div className="font-semibold text-slate-800">
+                      <div className="text-left min-w-0">
+                        <div className="font-semibold text-slate-800 text-sm">
                           {crypto.name}
                         </div>
-                        <div className="text-sm text-slate-500">
-                          {crypto.symbol}
+                        <div className="text-xs text-slate-500">
+                          {crypto.chain}
                         </div>
                       </div>
                     </button>
@@ -164,18 +213,17 @@ export default function DonationSection() {
                 </div>
               </div>
 
-              {/* Amount Selection */}
               <div className="mb-8">
                 <label className="block text-sm font-semibold text-slate-700 mb-4">
                   Select Amount ({selectedCrypto.symbol})
                 </label>
                 <div className="grid grid-cols-3 gap-3 mb-4">
-                  {PRESET_AMOUNTS.map((preset) => (
+                  {selectedCrypto.presets.map((preset) => (
                     <button
                       key={preset}
                       onClick={() => handlePresetAmount(preset)}
-                      className={`py-3 rounded-xl font-semibold transition-all ${
-                        amount === preset.toString()
+                      className={`py-3 rounded-xl font-semibold transition-all text-sm ${
+                        amount === preset
                           ? 'bg-gradient-primary text-white shadow-lg shadow-primary-500/30'
                           : 'bg-slate-50 text-slate-700 hover:bg-slate-100'
                       }`}
@@ -187,51 +235,73 @@ export default function DonationSection() {
                 <div className="relative">
                   <input
                     type="number"
+                    step="any"
                     placeholder={`Custom amount in ${selectedCrypto.symbol}`}
                     value={customAmount}
                     onChange={(e) => handleCustomAmount(e.target.value)}
                     className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 outline-none transition-all"
                   />
-                  <span className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 font-medium">
+                  <span className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 font-medium text-sm">
                     {selectedCrypto.symbol}
                   </span>
                 </div>
               </div>
 
-              {/* Wallet Status & Action */}
               <div className="space-y-4">
-                {isConnected ? (
+                {canConnectWallet ? (
                   <>
-                    <div className="flex items-center gap-3 p-4 bg-green-50 rounded-xl border border-green-200">
-                      <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-                      <span className="text-sm text-green-700">
-                        Connected: {formatAddress(address || '')}
-                      </span>
-                    </div>
-                    <button
-                      onClick={handleDonate}
-                      disabled={isPending || !amount}
-                      className="w-full py-4 bg-gradient-primary text-white font-bold rounded-2xl hover:shadow-lg hover:shadow-primary-500/30 transition-all hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
-                    >
-                      {isPending ? (
-                        <span className="flex items-center justify-center gap-2">
-                          <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                          Processing...
-                        </span>
-                      ) : (
-                        `Donate ${amount || '0'} ${selectedCrypto.symbol}`
-                      )}
-                    </button>
+                    {isConnected ? (
+                      <>
+                        <div className="flex items-center gap-3 p-4 bg-green-50 rounded-xl border border-green-200">
+                          <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+                          <span className="text-sm text-green-700">
+                            Connected: {formatAddress(address || '')}
+                          </span>
+                        </div>
+                        <button
+                          onClick={handleDonate}
+                          disabled={isPending || !amount}
+                          className="w-full py-4 bg-gradient-primary text-white font-bold rounded-2xl hover:shadow-lg hover:shadow-primary-500/30 transition-all hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+                        >
+                          {isPending ? (
+                            <span className="flex items-center justify-center gap-2">
+                              <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                              Processing...
+                            </span>
+                          ) : (
+                            `Donate ${amount || '0'} ${selectedCrypto.symbol}`
+                          )}
+                        </button>
+                      </>
+                    ) : (
+                      <div className="text-center p-6 bg-slate-50 rounded-2xl border border-slate-200">
+                        <Wallet className="w-12 h-12 text-slate-400 mx-auto mb-3" />
+                        <p className="text-slate-600 mb-4">
+                          Connect your wallet to donate {selectedCrypto.symbol}
+                        </p>
+                        <p className="text-sm text-slate-400">
+                          Use the connect button in the navigation bar
+                        </p>
+                      </div>
+                    )}
                   </>
                 ) : (
-                  <div className="text-center p-6 bg-slate-50 rounded-2xl border border-slate-200">
-                    <Wallet className="w-12 h-12 text-slate-400 mx-auto mb-3" />
-                    <p className="text-slate-600 mb-4">
-                      Connect your wallet to make a donation
+                  <div className="text-center p-6 bg-amber-50 rounded-2xl border border-amber-200">
+                    <Globe className="w-12 h-12 text-amber-500 mx-auto mb-3" />
+                    <p className="text-amber-800 font-semibold mb-2">
+                      Direct Transfer Only
                     </p>
-                    <p className="text-sm text-slate-400">
-                      Use the connect button in the navigation bar
+                    <p className="text-sm text-amber-700 mb-4">
+                      {selectedCrypto.name} ({selectedCrypto.chain}) requires a direct wallet transfer. Copy the address on the right and send from your wallet.
                     </p>
+                    <a
+                      href={`https://explorer.solana.com/address/${selectedCrypto.address}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 text-sm text-amber-600 hover:text-amber-800 font-medium"
+                    >
+                      View on Explorer <ExternalLink className="w-3 h-3" />
+                    </a>
                   </div>
                 )}
 
@@ -254,7 +324,6 @@ export default function DonationSection() {
             </div>
           </motion.div>
 
-          {/* QR Code & Info */}
           <motion.div
             initial={{ opacity: 0, x: 40 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -262,53 +331,92 @@ export default function DonationSection() {
             transition={{ duration: 0.8 }}
             className="space-y-6"
           >
-            {/* QR Code Card */}
             <div className="bg-white rounded-3xl shadow-xl shadow-slate-200/50 border border-slate-100 p-8 text-center">
               <h3 className="text-xl font-bold text-slate-800 mb-2">
                 Direct Transfer
               </h3>
               <p className="text-sm text-slate-500 mb-6">
-                Scan or copy the address to donate directly from your wallet
+                Send {selectedCrypto.symbol} on {selectedCrypto.chain} to this address
               </p>
-
-              {/* QR Placeholder */}
-              <div className="w-48 h-48 mx-auto mb-6 bg-gradient-to-br from-primary-100 to-accent-100 rounded-2xl flex items-center justify-center border-2 border-dashed border-primary-300">
-                <div className="text-center">
-                  <div 
-                    className="w-32 h-32 mx-auto mb-2 rounded-xl flex items-center justify-center text-4xl"
-                    style={{ backgroundColor: selectedCrypto.color + '20' }}
-                  >
-                    <span style={{ color: selectedCrypto.color }}>
-                      {selectedCrypto.icon}
-                    </span>
-                  </div>
-                  <span className="text-xs text-slate-400">QR Code Placeholder</span>
-                </div>
+              
+              <div className="w-24 h-24 mx-auto mb-6 rounded-3xl flex items-center justify-center text-4xl"
+                style={{ 
+                  backgroundColor: selectedCrypto.color + '15',
+                  color: selectedCrypto.color 
+                }}
+              >
+                {selectedCrypto.icon}
               </div>
 
-              {/* Address */}
-              <div className="bg-slate-50 rounded-xl p-4 flex items-center justify-between gap-3">
-                <code className="text-sm text-slate-600 truncate">
+              <div className="bg-slate-50 rounded-xl p-4 mb-4">
+                <div className="text-xs text-slate-400 uppercase tracking-wider mb-2 font-semibold">
+                  {selectedCrypto.name} Address ({selectedCrypto.chain})
+                </div>
+                <code className="block text-sm text-slate-700 break-all font-mono leading-relaxed">
                   {selectedCrypto.address}
                 </code>
-                <button
-                  onClick={handleCopyAddress}
-                  className="p-2 hover:bg-white rounded-lg transition-colors flex-shrink-0"
-                >
-                  {copied ? (
-                    <Check className="w-5 h-5 text-green-500" />
-                  ) : (
-                    <Copy className="w-5 h-5 text-slate-400" />
-                  )}
-                </button>
+              </div>
+              
+              <button
+                onClick={handleCopyAddress}
+                className="w-full py-3 px-4 bg-slate-800 text-white font-semibold rounded-xl hover:bg-slate-700 transition-colors flex items-center justify-center gap-2"
+              >
+                {copied ? (
+                  <>
+                    <Check className="w-5 h-5 text-green-400" />
+                    Address Copied!
+                  </>
+                ) : (
+                  <>
+                    <Copy className="w-5 h-5" />
+                    Copy Address
+                  </>
+                )}
+              </button>
+            </div>
+
+            <div className="bg-white rounded-3xl shadow-xl shadow-slate-200/50 border border-slate-100 p-6">
+              <h3 className="text-lg font-bold text-slate-800 mb-4">
+                All Donation Addresses
+              </h3>
+              <div className="space-y-3">
+                {CRYPTO_OPTIONS.map((crypto) => (
+                  <div 
+                    key={crypto.id}
+                    className={`flex items-center gap-3 p-3 rounded-xl transition-all cursor-pointer ${
+                      selectedCrypto.id === crypto.id 
+                        ? 'bg-primary-50 border border-primary-200' 
+                        : 'bg-slate-50 hover:bg-slate-100'
+                    }`}
+                    onClick={() => {
+                      setSelectedCrypto(crypto)
+                      setAmount('')
+                      setCustomAmount('')
+                    }}
+                  >
+                    <div
+                      className="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0"
+                      style={{ backgroundColor: crypto.color }}
+                    >
+                      {crypto.icon}
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <div className="text-sm font-semibold text-slate-700">
+                        {crypto.name} <span className="text-slate-400">({crypto.chain})</span>
+                      </div>
+                      <div className="text-xs text-slate-500 truncate font-mono">
+                        {crypto.address}
+                      </div>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
 
-            {/* Trust Indicators */}
             <div className="grid grid-cols-3 gap-4">
               {[
-                { icon: Shield, label: 'Secure', desc: 'Blockchain Verified' },
-                { icon: Zap, label: 'Fast', desc: 'Instant Transfer' },
+                { icon: Shield, label: 'Secure', desc: 'Verified Addresses' },
+                { icon: Zap, label: 'Fast', desc: 'Direct Transfer' },
                 { icon: Globe, label: 'Global', desc: 'No Borders' },
               ].map((item) => (
                 <div
