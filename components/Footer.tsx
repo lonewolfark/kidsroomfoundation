@@ -1,22 +1,33 @@
 'use client'
 
 import { Heart, Github, Twitter, MessageCircle, Mail } from 'lucide-react'
+import Image from 'next/image'
 
 export default function Footer() {
   return (
-    <footer className="bg-slate-900 text-slate-300">
+    <footer className="bg-earth-900 text-earth-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid md:grid-cols-4 gap-12">
           <div className="md:col-span-2">
-            <div className="flex items-center gap-2 mb-6">
-              <div className="w-10 h-10 bg-gradient-primary rounded-xl flex items-center justify-center">
-                <Heart className="w-5 h-5 text-white" fill="white" />
+            <div className="flex items-center gap-3 mb-6">
+              <div className="relative w-12 h-12">
+                <Image
+                  src="/images/logo.png"
+                  alt="Kids Room Foundation"
+                  fill
+                  className="object-contain brightness-0 invert"
+                />
               </div>
-              <span className="text-xl font-bold text-white">
-                Kids Room Foundation
-              </span>
+              <div>
+                <span className="text-xl font-bold text-white block leading-tight">
+                  Kids Room Foundation
+                </span>
+                <span className="text-sm text-coral-300">
+                  Every Child Deserves a Safe Place to Grow
+                </span>
+              </div>
             </div>
-            <p className="text-slate-400 leading-relaxed mb-6 max-w-md">
+            <p className="text-earth-400 leading-relaxed mb-6 max-w-md">
               Building a transparent future for charitable giving. Every crypto 
               donation is tracked on the blockchain, ensuring your contribution 
               reaches children in need.
@@ -31,7 +42,7 @@ export default function Footer() {
                 <a
                   key={social.label}
                   href={social.href}
-                  className="w-10 h-10 rounded-xl bg-slate-800 flex items-center justify-center hover:bg-primary-600 transition-colors"
+                  className="w-10 h-10 rounded-xl bg-earth-800 flex items-center justify-center hover:bg-coral-600 transition-colors"
                   aria-label={social.label}
                 >
                   <social.icon className="w-5 h-5" />
@@ -53,7 +64,7 @@ export default function Footer() {
                 <li key={link.name}>
                   <a
                     href={link.href}
-                    className="text-slate-400 hover:text-white transition-colors"
+                    className="text-earth-400 hover:text-coral-300 transition-colors"
                   >
                     {link.name}
                   </a>
@@ -75,7 +86,7 @@ export default function Footer() {
                 <li key={link.name}>
                   <a
                     href={link.href}
-                    className="text-slate-400 hover:text-white transition-colors"
+                    className="text-earth-400 hover:text-coral-300 transition-colors"
                   >
                     {link.name}
                   </a>
@@ -85,18 +96,18 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-12 pt-8 border-t border-slate-800 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-sm text-slate-500">
+        <div className="mt-12 pt-8 border-t border-earth-800 flex flex-col md:flex-row justify-between items-center gap-4">
+          <p className="text-sm text-earth-500">
             © 2024 Kids Room Foundation. All rights reserved.
           </p>
-          <div className="flex gap-6 text-sm text-slate-500">
-            <a href="#" className="hover:text-white transition-colors">
+          <div className="flex gap-6 text-sm text-earth-500">
+            <a href="#" className="hover:text-coral-300 transition-colors">
               Privacy Policy
             </a>
-            <a href="#" className="hover:text-white transition-colors">
+            <a href="#" className="hover:text-coral-300 transition-colors">
               Terms of Service
             </a>
-            <a href="#" className="hover:text-white transition-colors">
+            <a href="#" className="hover:text-coral-300 transition-colors">
               Cookie Policy
             </a>
           </div>
