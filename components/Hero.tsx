@@ -9,7 +9,6 @@ export default function Hero() {
       id="home"
       className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20"
     >
-      {/* Background Elements */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute top-20 left-10 w-72 h-72 bg-primary-300/30 rounded-full blur-3xl animate-float" />
         <div className="absolute bottom-20 right-10 w-96 h-96 bg-accent-300/30 rounded-full blur-3xl animate-float" style={{ animationDelay: '2s' }} />
@@ -71,7 +70,6 @@ export default function Hero() {
           </a>
         </motion.div>
 
-        {/* Stats Preview */}
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
@@ -83,7 +81,7 @@ export default function Hero() {
             { label: 'Total Donations', value: '$2.4M' },
             { label: 'Countries', value: '28' },
             { label: 'Donors', value: '8,300+' },
-          ].map((stat, index) => (
+          ].map((stat) => (
             <div
               key={stat.label}
               className="bg-white/60 backdrop-blur-sm rounded-2xl p-4 border border-white/50"
