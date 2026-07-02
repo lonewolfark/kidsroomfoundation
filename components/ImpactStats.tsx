@@ -9,28 +9,28 @@ const impactData = [
     value: '12,500+',
     label: 'Children Supported',
     description: 'Directly impacted through our programs',
-    color: 'from-blue-500 to-cyan-400',
+    color: 'from-coral-400 to-coral-300',
   },
   {
     icon: Building,
     value: '45',
     label: 'Schools Built',
     description: 'Educational facilities constructed',
-    color: 'from-purple-500 to-pink-400',
+    color: 'from-earth-400 to-earth-300',
   },
   {
     icon: GraduationCap,
     value: '3,200+',
     label: 'Scholarships',
     description: 'Students receiving education support',
-    color: 'from-orange-500 to-yellow-400',
+    color: 'from-warm-400 to-coral-300',
   },
   {
     icon: Heart,
     value: '98%',
     label: 'Funds to Cause',
     description: 'Directly reaches children in need',
-    color: 'from-green-500 to-emerald-400',
+    color: 'from-coral-500 to-earth-400',
   },
 ]
 
@@ -44,7 +44,7 @@ const recentDonations = [
 
 export default function ImpactStats() {
   return (
-    <section id="impact" className="py-24 bg-gradient-to-b from-white to-slate-50">
+    <section id="impact" className="py-24 bg-gradient-to-b from-white to-coral-50/30">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 40 }}
@@ -53,16 +53,16 @@ export default function ImpactStats() {
           transition={{ duration: 0.8 }}
           className="text-center mb-16"
         >
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-50 border border-green-200 mb-6">
-            <TrendingUp className="w-4 h-4 text-green-500" />
-            <span className="text-sm font-medium text-green-700">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-coral-50 border border-coral-200 mb-6">
+            <TrendingUp className="w-4 h-4 text-coral-500" />
+            <span className="text-sm font-medium text-coral-700">
               Real-Time Impact
             </span>
           </div>
-          <h2 className="text-4xl sm:text-5xl font-bold text-slate-800 mb-4">
+          <h2 className="text-4xl sm:text-5xl font-bold text-earth-800 mb-4">
             Our <span className="text-gradient">Impact</span> in Numbers
           </h2>
-          <p className="text-lg text-slate-600 max-w-2xl mx-auto">
+          <p className="text-lg text-earth-600 max-w-2xl mx-auto">
             Every donation creates a measurable impact. Track our progress in real-time.
           </p>
         </motion.div>
@@ -75,18 +75,18 @@ export default function ImpactStats() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: index * 0.1 }}
-              className="bg-white rounded-3xl p-8 shadow-lg shadow-slate-200/50 border border-slate-100 hover:shadow-xl transition-shadow"
+              className="bg-white rounded-3xl p-8 shadow-lg shadow-earth-100/50 border border-coral-100/50 hover:shadow-xl transition-shadow"
             >
               <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${stat.color} flex items-center justify-center mb-6`}>
                 <stat.icon className="w-7 h-7 text-white" />
               </div>
-              <div className="text-3xl font-bold text-slate-800 mb-2">
+              <div className="text-3xl font-bold text-earth-800 mb-2">
                 {stat.value}
               </div>
-              <div className="font-semibold text-slate-700 mb-1">
+              <div className="font-semibold text-earth-700 mb-1">
                 {stat.label}
               </div>
-              <div className="text-sm text-slate-500">
+              <div className="text-sm text-earth-500">
                 {stat.description}
               </div>
             </motion.div>
@@ -99,14 +99,14 @@ export default function ImpactStats() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="bg-white rounded-3xl shadow-lg shadow-slate-200/50 border border-slate-100 p-8"
+            className="bg-white rounded-3xl shadow-lg shadow-earth-100/50 border border-coral-100/50 p-8"
           >
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-bold text-slate-800">
+              <h3 className="text-xl font-bold text-earth-800">
                 Recent Donations
               </h3>
-              <div className="flex items-center gap-2 text-green-500">
-                <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+              <div className="flex items-center gap-2 text-coral-500">
+                <div className="w-2 h-2 bg-coral-500 rounded-full animate-pulse" />
                 <span className="text-sm font-medium">Live</span>
               </div>
             </div>
@@ -118,26 +118,26 @@ export default function ImpactStats() {
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.1 }}
-                  className="flex items-center justify-between p-4 rounded-xl bg-slate-50 hover:bg-slate-100 transition-colors"
+                  className="flex items-center justify-between p-4 rounded-xl bg-earth-50 hover:bg-coral-50 transition-colors"
                 >
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-full bg-gradient-primary flex items-center justify-center text-white text-sm font-bold">
                       {donation.address.slice(0, 2)}
                     </div>
                     <div>
-                      <div className="font-mono text-sm text-slate-700">
+                      <div className="font-mono text-sm text-earth-700">
                         {donation.address}
                       </div>
-                      <div className="text-xs text-slate-400">
+                      <div className="text-xs text-earth-400">
                         {donation.time}
                       </div>
                     </div>
                   </div>
                   <div className="text-right">
-                    <div className="font-semibold text-slate-800">
+                    <div className="font-semibold text-earth-800">
                       {donation.amount}
                     </div>
-                    <div className="text-sm text-green-600">
+                    <div className="text-sm text-coral-600">
                       {donation.usd}
                     </div>
                   </div>
@@ -190,7 +190,7 @@ export default function ImpactStats() {
 
             <a
               href="#"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-white text-primary-600 font-semibold rounded-xl hover:bg-white/90 transition-colors"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-white text-coral-600 font-semibold rounded-xl hover:bg-white/90 transition-colors"
             >
               View All Transactions
               <TrendingUp className="w-4 h-4" />
