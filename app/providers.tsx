@@ -8,7 +8,7 @@ import { useState } from 'react'
 
 const config = getDefaultConfig({
   appName: 'Kids Room Foundation',
-  projectId: 'YOUR_WALLETCONNECT_PROJECT_ID', // Replace with your WalletConnect Project ID
+  projectId: 'YOUR_WALLETCONNECT_PROJECT_ID',
   chains: [mainnet, polygon, optimism, arbitrum, base],
   ssr: true,
 })
