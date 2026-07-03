@@ -1,20 +1,17 @@
 'use client'
 
 import { useState } from 'react'
-import { useAccount, useSendTransaction } from 'wagmi'
-import { parseEther } from 'viem'
 import { motion } from 'framer-motion'
 import { 
-  Wallet, 
   Copy, 
   Check, 
   Heart,
   Shield,
   Zap,
   Globe,
-  ExternalLink
+  ExternalLink,
+  Wallet
 } from 'lucide-react'
-import { formatAddress } from '@/lib/utils'
 
 const WALLET_ADDRESSES = {
   btc: 'bc1qfwvcxf4lxu7pm7zjz4765a0ex3sw6sqv3h2ace',
@@ -95,47 +92,14 @@ const CRYPTO_OPTIONS = [
 ]
 
 export default function DonationSection() {
-  const { address, isConnected } = useAccount()
-  const { sendTransaction, isPending } = useSendTransaction()
   const [selectedCrypto, setSelectedCrypto] = useState(CRYPTO_OPTIONS[0])
-  const [amount, setAmount] = useState('')
-  const [customAmount, setCustomAmount] = useState('')
   const [copied, setCopied] = useState(false)
-  const [donationSuccess, setDonationSuccess] = useState(false)
 
   const handleCopyAddress = () => {
     navigator.clipboard.writeText(selectedCrypto.address)
     setCopied(true)
     setTimeout(() => setCopied(false), 2000)
   }
-
-  const handleDonate = async () => {
-    if (!isConnected || !amount || !selectedCrypto.evm) return
-    
-    try {
-      const value = parseEther(amount)
-      await sendTransaction({
-        to: selectedCrypto.address as `0x${string}`,
-        value,
-      })
-      setDonationSuccess(true)
-      setTimeout(() => setDonationSuccess(false), 5000)
-    } catch (error) {
-      console.error('Donation failed:', error)
-    }
-  }
-
-  const handlePresetAmount = (preset: string) => {
-    setAmount(preset)
-    setCustomAmount('')
-  }
-
-  const handleCustomAmount = (value: string) => {
-    setCustomAmount(value)
-    setAmount(value)
-  }
-
-  const canConnectWallet = selectedCrypto.evm
 
   return (
     <section id="donate" className="py-24 relative">
@@ -157,8 +121,8 @@ export default function DonationSection() {
             Choose Your <span className="text-gradient">Donation</span>
           </h2>
           <p className="text-lg text-earth-600 max-w-2xl mx-auto">
-            Select your preferred cryptocurrency and amount. Every donation is 
-            recorded on the blockchain for complete transparency.
+            Select your preferred cryptocurrency and send directly to our verified wallet. 
+            Every donation is recorded on the blockchain for complete transparency.
           </p>
         </motion.div>
 
@@ -178,11 +142,7 @@ export default function DonationSection() {
                   {CRYPTO_OPTIONS.map((crypto) => (
                     <button
                       key={crypto.id}
-                      onClick={() => {
-                        setSelectedCrypto(crypto)
-                        setAmount('')
-                        setCustomAmount('')
-                      }}
+                      onClick={() => setSelectedCrypto(crypto)}
                       className={`flex items-center gap-3 p-4 rounded-2xl border-2 transition-all ${
                         selectedCrypto.id === crypto.id
                           ? 'border-coral-400 bg-coral-50'
@@ -210,111 +170,34 @@ export default function DonationSection() {
 
               <div className="mb-8">
                 <label className="block text-sm font-semibold text-earth-700 mb-4">
-                  Select Amount ({selectedCrypto.symbol})
+                  Suggested Amounts ({selectedCrypto.symbol})
                 </label>
-                <div className="grid grid-cols-3 gap-3 mb-4">
+                <div className="grid grid-cols-3 gap-3">
                   {selectedCrypto.presets.map((preset) => (
-                    <button
+                    <div
                       key={preset}
-                      onClick={() => handlePresetAmount(preset)}
-                      className={`py-3 rounded-xl font-semibold transition-all text-sm ${
-                        amount === preset
-                          ? 'bg-gradient-primary text-white shadow-lg shadow-coral-500/30'
-                          : 'bg-earth-50 text-earth-700 hover:bg-coral-50'
-                      }`}
+                      className="py-3 rounded-xl font-semibold text-sm bg-earth-50 text-earth-700 text-center border border-earth-100"
                     >
                       {preset} {selectedCrypto.symbol}
-                    </button>
+                    </div>
                   ))}
-                </div>
-                <div className="relative">
-                  <input
-                    type="number"
-                    step="any"
-                    placeholder={`Custom amount in ${selectedCrypto.symbol}`}
-                    value={customAmount}
-                    onChange={(e) => handleCustomAmount(e.target.value)}
-                    className="w-full px-4 py-3 rounded-xl border border-earth-200 focus:border-coral-400 focus:ring-2 focus:ring-coral-200 outline-none transition-all"
-                  />
-                  <span className="absolute right-4 top-1/2 -translate-y-1/2 text-earth-400 font-medium text-sm">
-                    {selectedCrypto.symbol}
-                  </span>
                 </div>
               </div>
 
-              <div className="space-y-4">
-                {canConnectWallet ? (
-                  <>
-                    {isConnected ? (
-                      <>
-                        <div className="flex items-center gap-3 p-4 bg-green-50 rounded-xl border border-green-200">
-                          <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-                          <span className="text-sm text-green-700">
-                            Connected: {formatAddress(address || '')}
-                          </span>
-                        </div>
-                        <button
-                          onClick={handleDonate}
-                          disabled={isPending || !amount}
-                          className="w-full py-4 bg-gradient-primary text-white font-bold rounded-2xl hover:shadow-lg hover:shadow-coral-500/30 transition-all hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
-                        >
-                          {isPending ? (
-                            <span className="flex items-center justify-center gap-2">
-                              <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                              Processing...
-                            </span>
-                          ) : (
-                            `Donate ${amount || '0'} ${selectedCrypto.symbol}`
-                          )}
-                        </button>
-                      </>
-                    ) : (
-                      <div className="text-center p-6 bg-earth-50 rounded-2xl border border-earth-200">
-                        <Wallet className="w-12 h-12 text-earth-400 mx-auto mb-3" />
-                        <p className="text-earth-600 mb-4">
-                          Connect your wallet to donate {selectedCrypto.symbol}
-                        </p>
-                        <p className="text-sm text-earth-400">
-                          Use the connect button in the navigation bar
-                        </p>
-                      </div>
-                    )}
-                  </>
-                ) : (
-                  <div className="text-center p-6 bg-amber-50 rounded-2xl border border-amber-200">
-                    <Globe className="w-12 h-12 text-amber-500 mx-auto mb-3" />
-                    <p className="text-amber-800 font-semibold mb-2">
-                      Direct Transfer Only
-                    </p>
-                    <p className="text-sm text-amber-700 mb-4">
-                      {selectedCrypto.name} ({selectedCrypto.chain}) requires a direct wallet transfer. Copy the address on the right and send from your wallet.
-                    </p>
-                    <a
-                      href={`https://explorer.solana.com/address/${selectedCrypto.address}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 text-sm text-amber-600 hover:text-amber-800 font-medium"
-                    >
-                      View on Explorer <ExternalLink className="w-3 h-3" />
-                    </a>
-                  </div>
-                )}
-
-                {donationSuccess && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="p-4 bg-green-50 rounded-xl border border-green-200 text-center"
-                  >
-                    <Check className="w-6 h-6 text-green-500 mx-auto mb-2" />
-                    <p className="text-green-700 font-semibold">
-                      Thank you for your donation!
-                    </p>
-                    <p className="text-sm text-green-600 mt-1">
-                      Your transaction has been submitted.
-                    </p>
-                  </motion.div>
-                )}
+              <div className="p-6 bg-coral-50 rounded-2xl border border-coral-200">
+                <div className="flex items-center gap-3 mb-3">
+                  <Wallet className="w-5 h-5 text-coral-600" />
+                  <span className="font-semibold text-earth-800">How to Donate</span>
+                </div>
+                <ol className="text-sm text-earth-600 space-y-2 list-decimal list-inside">
+                  <li>Copy the wallet address on the right</li>
+                  <li>Open your crypto wallet app</li>
+                  <li>Paste the address and enter your amount</li>
+                  <li>Confirm the transaction</li>
+                </ol>
+                <p className="text-xs text-earth-500 mt-3">
+                  Make sure you send on the <strong>{selectedCrypto.chain}</strong> network only.
+                </p>
               </div>
             </div>
           </motion.div>
@@ -368,6 +251,17 @@ export default function DonationSection() {
                   </>
                 )}
               </button>
+
+              {selectedCrypto.id === 'sol' && (
+                <a
+                  href={`https://explorer.solana.com/address/${selectedCrypto.address}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-3 inline-flex items-center gap-2 text-sm text-coral-600 hover:text-coral-800 font-medium"
+                >
+                  View on Solana Explorer <ExternalLink className="w-3 h-3" />
+                </a>
+              )}
             </div>
 
             <div className="bg-white rounded-3xl shadow-xl shadow-earth-100/50 border border-coral-100/50 p-6">
@@ -383,11 +277,7 @@ export default function DonationSection() {
                         ? 'bg-coral-50 border border-coral-200' 
                         : 'bg-earth-50 hover:bg-earth-100'
                     }`}
-                    onClick={() => {
-                      setSelectedCrypto(crypto)
-                      setAmount('')
-                      setCustomAmount('')
-                    }}
+                    onClick={() => setSelectedCrypto(crypto)}
                   >
                     <div
                       className="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0"
