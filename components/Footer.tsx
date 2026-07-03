@@ -2,6 +2,7 @@
 
 import { Heart, Github, Twitter, MessageCircle, Mail } from 'lucide-react'
 import Image from 'next/image'
+import Link from 'next/link'
 
 export default function Footer() {
   return (
@@ -55,19 +56,19 @@ export default function Footer() {
             <h4 className="text-white font-semibold mb-6">Quick Links</h4>
             <ul className="space-y-3">
               {[
-                { name: 'Home', href: '#home' },
-                { name: 'Donate', href: '#donate' },
-                { name: 'Impact', href: '#impact' },
-                { name: 'About', href: '#about' },
-                { name: 'Transparency Report', href: '#' },
+                { name: 'Home', href: '/' },
+                { name: 'Donate', href: '/#donate' },
+                { name: 'News', href: '/news' },
+                { name: 'About Us', href: '/about' },
+                { name: 'Contact', href: '/contact' },
               ].map((link) => (
                 <li key={link.name}>
-                  <a
+                  <Link
                     href={link.href}
                     className="text-earth-400 hover:text-coral-300 transition-colors"
                   >
                     {link.name}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -77,19 +78,20 @@ export default function Footer() {
             <h4 className="text-white font-semibold mb-6">Resources</h4>
             <ul className="space-y-3">
               {[
-                { name: 'How to Donate Crypto', href: '#' },
-                { name: 'Tax Information', href: '#' },
-                { name: 'FAQ', href: '#' },
-                { name: 'Partnerships', href: '#' },
-                { name: 'Contact Us', href: '#' },
+                { name: 'How to Donate Crypto', href: '/#donate' },
+                { name: 'Tax Information', href: '/about' },
+                { name: 'FAQ', href: '/contact' },
+                { name: 'Partnerships', href: '/contact' },
+                { name: 'Privacy Policy', href: '/privacy' },
+                { name: 'Terms of Service', href: '/terms' },
               ].map((link) => (
                 <li key={link.name}>
-                  <a
+                  <Link
                     href={link.href}
                     className="text-earth-400 hover:text-coral-300 transition-colors"
                   >
                     {link.name}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -101,15 +103,12 @@ export default function Footer() {
             © 2024 Kids Room Foundation. All rights reserved.
           </p>
           <div className="flex gap-6 text-sm text-earth-500">
-            <a href="#" className="hover:text-coral-300 transition-colors">
+            <Link href="/privacy" className="hover:text-coral-300 transition-colors">
               Privacy Policy
-            </a>
-            <a href="#" className="hover:text-coral-300 transition-colors">
+            </Link>
+            <Link href="/terms" className="hover:text-coral-300 transition-colors">
               Terms of Service
-            </a>
-            <a href="#" className="hover:text-coral-300 transition-colors">
-              Cookie Policy
-            </a>
+            </Link>
           </div>
         </div>
       </div>
