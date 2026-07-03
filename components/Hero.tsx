@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion'
 import { ArrowDown, Heart } from 'lucide-react'
 import Image from 'next/image'
+import Link from 'next/link'
 
 export default function Hero() {
   return (
@@ -74,18 +75,18 @@ export default function Hero() {
           transition={{ duration: 0.8, delay: 0.6 }}
           className="flex flex-col sm:flex-row gap-4 justify-center items-center"
         >
-          <a
-            href="#donate"
+          <Link
+            href="/#donate"
             className="px-8 py-4 bg-gradient-primary text-white font-semibold rounded-2xl hover:shadow-lg hover:shadow-coral-500/30 transition-all hover:scale-105 animate-pulse-glow"
           >
             Make a Donation
-          </a>
-          <a
-            href="#impact"
+          </Link>
+          <Link
+            href="/about"
             className="px-8 py-4 bg-white text-earth-700 font-semibold rounded-2xl border border-earth-200 hover:border-coral-300 hover:shadow-lg transition-all"
           >
-            See Our Impact
-          </a>
+            Learn More
+          </Link>
         </motion.div>
 
         <motion.div
