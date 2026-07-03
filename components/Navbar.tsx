@@ -1,7 +1,8 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { ConnectButton } from '@rainbow-me/rainbowkit'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { Menu, X } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Image from 'next/image'
@@ -9,6 +10,7 @@ import Image from 'next/image'
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const pathname = usePathname()
 
   useEffect(() => {
     const handleScroll = () => {
@@ -19,11 +21,18 @@ export default function Navbar() {
   }, [])
 
   const navLinks = [
-    { name: 'Home', href: '#home' },
-    { name: 'Donate', href: '#donate' },
-    { name: 'Impact', href: '#impact' },
-    { name: 'About', href: '#about' },
+    { name: 'Home', href: '/' },
+    { name: 'Donate', href: '/#donate' },
+    { name: 'News', href: '/news' },
+    { name: 'About', href: '/about' },
+    { name: 'Contact', href: '/contact' },
   ]
+
+  const isActive = (href: string) => {
+    if (href === '/') return pathname === '/'
+    if (href.startsWith('/#')) return pathname === '/'
+    return pathname === href
+  }
 
   return (
     <motion.nav
@@ -38,7 +47,7 @@ export default function Navbar() {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
-          <a href="#home" className="flex items-center gap-3 group">
+          <Link href="/" className="flex items-center gap-3 group">
             <div className="relative w-12 h-12 group-hover:scale-110 transition-transform">
               <Image
                 src="/images/logo.png"
@@ -56,28 +65,33 @@ export default function Navbar() {
                 Foundation
               </span>
             </div>
-          </a>
+          </Link>
 
           <div className="hidden md:flex items-center gap-8">
             {navLinks.map((link) => (
-              <a
+              <Link
                 key={link.name}
                 href={link.href}
-                className="text-earth-600 hover:text-coral-600 font-medium transition-colors relative group"
+                className={`font-medium transition-colors relative group ${
+                  isActive(link.href)
+                    ? 'text-coral-600'
+                    : 'text-earth-600 hover:text-coral-600'
+                }`}
               >
                 {link.name}
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-primary group-hover:w-full transition-all duration-300" />
-              </a>
+                <span className={`absolute -bottom-1 left-0 h-0.5 bg-gradient-primary transition-all duration-300 ${
+                  isActive(link.href) ? 'w-full' : 'w-0 group-hover:w-full'
+                }`} />
+              </Link>
             ))}
           </div>
 
-          <div className="hidden md:block">
-            <ConnectButton 
-              showBalance={false}
-              accountStatus="address"
-              chainStatus="icon"
-            />
-          </div>
+          <Link
+            href="/#donate"
+            className="hidden md:inline-flex px-5 py-2.5 bg-gradient-primary text-white font-semibold rounded-xl hover:shadow-lg hover:shadow-coral-500/30 transition-all hover:scale-105 text-sm"
+          >
+            Donate Now
+          </Link>
 
           <button
             className="md:hidden p-2"
@@ -102,21 +116,27 @@ export default function Navbar() {
           >
             <div className="px-4 py-6 space-y-4">
               {navLinks.map((link) => (
-                <a
+                <Link
                   key={link.name}
                   href={link.href}
-                  className="block text-earth-600 hover:text-coral-600 font-medium py-2"
+                  className={`block font-medium py-2 ${
+                    isActive(link.href)
+                      ? 'text-coral-600'
+                      : 'text-earth-600 hover:text-coral-600'
+                  }`}
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   {link.name}
-                </a>
+                </Link>
               ))}
               <div className="pt-4 border-t border-coral-100">
-                <ConnectButton 
-                  showBalance={false}
-                  accountStatus="address"
-                  chainStatus="icon"
-                />
+                <Link
+                  href="/#donate"
+                  className="block w-full text-center px-5 py-3 bg-gradient-primary text-white font-semibold rounded-xl"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  Donate Now
+                </Link>
               </div>
             </div>
           </motion.div>
